@@ -11,8 +11,8 @@ on:
         required: true
         type: choice
         options:
-          - formal-env
-          - tests,Linux
+          - formal-tests
+          - normal-tests
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -24,10 +24,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - runner: ${{ github.event.inputs.runner }}
+          - name: formal-tests
+            runner-labels: [self-hosted, tests, Windows, formal-env]
+          - name: normal-tests
+            runner-labels: [self-hosted, tests, Linux]
+    runs-on: ${{ matrix.runner-labels }}
+    if: ${{ matrix.name == github.event.inputs.runner }}
     steps:
       - uses: actions/checkout@v4
-      
       - name: check ci user
         run: |
           echo "hello! CI user is $(whoami)"
