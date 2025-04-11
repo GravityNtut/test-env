@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ${{ 
-      'true' == github.event.inputs.runner &&
+      github.event.inputs.runner == true &&
       fromJson('["self-hosted", "tests", "Windows", "formal-env"]') || 
       fromJson('["self-hosted", "tests", "Linux"]') 
     }}
@@ -20,4 +20,3 @@ jobs:
       - name: check ci user
         run: |
           echo "hello! CI user is $(whoami)"
-          echo "Running on ${{ matrix.runner-labels }}"
