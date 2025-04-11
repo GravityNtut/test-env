@@ -4,26 +4,20 @@ on:
   workflow_dispatch:
     inputs:
       runner:
-        description: 'Select a runner'
+        description: '是否使用正式環境'
         required: true
-        type: choice
-        options:
-          - formal-tests
-          - normal-tests
+        type: boolean
 
 jobs:
   build:
-    strategy:
-      matrix:
-        include:
-          - name: formal-tests
-            runner-labels: [self-hosted, tests, Windows, formal-env]
-          - name: normal-tests
-            runner-labels: [self-hosted, tests, Linux]
-    runs-on: ${{ matrix.runner-labels }}
-    if: ${{ matrix.name == github.event.inputs.runner }}
+    runs-on: ${{ 
+      'true' == github.event.inputs.runner &&
+      fromJson('["self-hosted", "tests", "Windows", "formal-env"]') || 
+      fromJson('["self-hosted", "tests", "Linux"]') 
+    }}
     steps:
       - uses: actions/checkout@v4
       - name: check ci user
         run: |
           echo "hello! CI user is $(whoami)"
+          echo "Running on ${{ matrix.runner-labels }}"
