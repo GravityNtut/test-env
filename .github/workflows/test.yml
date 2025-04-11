@@ -9,14 +9,29 @@ on:
         type: boolean
 
 jobs:
-  build:
-    runs-on: ${{ 
-      github.event.inputs.runner == true &&
-      fromJson('["self-hosted", "tests", "Windows", "formal-env"]') || 
-      fromJson('["self-hosted", "tests", "Linux"]') 
-    }}
+  formal:
+    if: ${{ github.event.inputs.runner == true }}
+    runs-on:
+      - self-hosted
+      - tests
+      - Windows
+      - formal-env
     steps:
       - uses: actions/checkout@v4
-      - name: check ci user
+      - name: Run on formal env
         run: |
-          echo "hello! CI user is $(whoami)"
+          echo "🟢 正式環境"
+          echo "CI user is $(whoami)"
+
+  nonformal:
+    if: ${{ github.event.inputs.runner == false }}
+    runs-on:
+      - self-hosted
+      - tests
+      - Linux
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run on non-formal env
+        run: |
+          echo "🔵 測試環境"
+          echo "CI user is $(whoami)"
