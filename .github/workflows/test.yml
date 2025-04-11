@@ -9,10 +9,10 @@ on:
       runner:
         description: 'Select a runner'
         required: true
-        default: 'tests,linux'
         type: choice
         options:
           - formal-env
+          - tests,linux
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
