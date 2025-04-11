@@ -20,6 +20,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run on formal env
         run: |
+          echo "${{ github.event.inputs.runner }}"
           echo "🟢 正式環境"
           echo "CI user is $(whoami)"
 
