@@ -21,7 +21,7 @@ jobs:
           echo "${{ github.event.inputs.runner }}"
           echo "CI user is $(whoami)"
   formal:
-    if: ${{ github.event.inputs.runner }} == true
+    if: ${{ github.event.inputs.runner == 'true' }}
     runs-on:
       - self-hosted
       - tests
@@ -35,7 +35,7 @@ jobs:
           echo "🟢 正式環境"
           echo "CI user is $(whoami)"
   nonformal:
-    if: ${{ github.event.inputs.runner }} == false
+    if: ${{ github.event.inputs.runner == 'false' }}
     runs-on:
       - self-hosted
       - tests
